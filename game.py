@@ -17,6 +17,7 @@ FPS = 12
 
 # Colors
 BLACK = (0, 0, 0)
+DARK_BLUE = (5, 10, 35)
 WHITE = (255, 255, 255)
 GREEN = (0, 200, 0)
 BRIGHT_GREEN = (0, 255, 0)
@@ -35,6 +36,7 @@ class SnakeGame:
         self.clock = pygame.time.Clock()
         self.font = pygame.font.Font(None, 36)
         self.large_font = pygame.font.Font(None, 72)
+        self.high_score = 0
         self.reset_game()
 
     def reset_game(self):
@@ -83,10 +85,14 @@ class SnakeGame:
             or new_head[1] >= GRID_HEIGHT
         ):
             self.game_over = True
+            if self.score > self.high_score:
+                self.high_score = self.score
             return
 
         if new_head in self.snake:
             self.game_over = True
+            if self.score > self.high_score:
+                self.high_score = self.score
             return
 
         self.snake.insert(0, new_head)
@@ -109,7 +115,7 @@ class SnakeGame:
         pygame.draw.rect(self.screen, WHITE, highlight, 2)
 
     def draw(self):
-        self.screen.fill(BLACK)
+        self.screen.fill(DARK_BLUE)
         for i in range(0, WINDOW_WIDTH, GRID_SIZE):
             pygame.draw.line(self.screen, GRAY, (i, 0), (i, WINDOW_HEIGHT))
         for i in range(0, WINDOW_HEIGHT, GRID_SIZE):
@@ -125,8 +131,10 @@ class SnakeGame:
 
         score_text = self.font.render(f"Score: {self.score}", True, WHITE)
         self.screen.blit(score_text, (10, 10))
+        high_score_text = self.font.render(f"High Score: {self.high_score}", True, WHITE)
+        self.screen.blit(high_score_text, (10, 40))
         food_text = self.font.render(f"Food: {len(self.foods)}", True, WHITE)
-        self.screen.blit(food_text, (10, 40))
+        self.screen.blit(food_text, (10, 70))
 
         if self.game_over:
             over_text = self.large_font.render("GAME OVER", True, RED)
