@@ -13,7 +13,7 @@ GRID_SIZE = 20
 GRID_WIDTH = WINDOW_WIDTH // GRID_SIZE
 GRID_HEIGHT = WINDOW_HEIGHT // GRID_SIZE
 
-FPS = 12
+FPS = 14
 
 # Colors
 BLACK = (0, 0, 0)
@@ -45,6 +45,7 @@ class SnakeGame:
         self.score = 0
         self.game_over = False
         self.foods = []
+        self.spawn_food()
         self.spawn_food()
         self.spawn_food()
         self.spawn_food()
@@ -134,7 +135,8 @@ class SnakeGame:
         high_score_text = self.font.render(f"High Score: {self.high_score}", True, WHITE)
         self.screen.blit(high_score_text, (10, 40))
         food_text = self.font.render(f"Food: {len(self.foods)}", True, WHITE)
-        self.screen.blit(food_text, (10, 70))
+        food_rect = food_text.get_rect(topright=(WINDOW_WIDTH - 10, 10))
+        self.screen.blit(food_text, food_rect)
 
         if self.game_over:
             over_text = self.large_font.render("GAME OVER", True, RED)
